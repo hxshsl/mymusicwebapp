@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+         <configuration scan="true" scanPeriod="60 seconds">
+    3     <property name="LOG_HOME" value="/datalog/shopping/shopping-goods/"/>
+    4     <property name="FORMAT" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{25} - %msg%n"/>
+    5     <property name="RollingMaxHistory" value="10"/>
+    6     <property name="RollingFileNamePattern" value="${LOG_HOME}/%d{yyyy-MM-dd}.%i"/>
+    7
+    8
+    9     <!-- 彩色日志依赖的渲染类 -->
+    10     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    11     <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    13     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    15     <!-- 彩色日志格式 -->
+    16     <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    18
+    19
+    20     <!-- 控制台输出 -->
+    21     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    22         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+    23             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+    24             <charset>utf8</charset>
+    25         </encoder>
+    26     </appender>
+    27
+    28
+    29     <!-- 生成INFO日志文件 -->
+    30     <appender name="INFO-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    31         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+    32             <!--日志文件输出的文件名-->
+    33             <FileNamePattern>${RollingFileNamePattern}/info/%d{yyyy-MM-dd}.%i-info.log</FileNamePattern>
+    34             <!--日志文件最大的大小-->
+    35             <maxFileSize>500MB</maxFileSize>
+    36             <!--日志文件保留天数-->
+    37             <MaxHistory>${RollingMaxHistory}</MaxHistory>
+    38         </rollingPolicy>
+    39         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+    40             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+    41             <pattern>${FORMAT}</pattern>
+    42         </encoder>
+    43         <!-- 打印日志级别 -->
+    44         <filter class="ch.qos.logback.classic.filter.LevelFilter">
+    45             <level>debug</level>
+    46             <onMatch>ACCEPT</onMatch>
+    47             <onMismatch>DENY</onMismatch>
+    48         </filter>
+    49     </appender>
+    50
+    51     <!-- 生成ERROR日志文件 -->
+    52     <appender name="ERROR-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    53         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+    54             <!--日志文件输出的文件名-->
+    55             <FileNamePattern>${RollingFileNamePattern}/error/%d{yyyy-MM-dd}.%i-error.log</FileNamePattern>
+    56             <!--日志文件最大的大小-->
+    57             <maxFileSize>500MB</maxFileSize>
+    58             <!--日志文件保留天数-->
+    59             <MaxHistory>${RollingMaxHistory}</MaxHistory>
+    60         </rollingPolicy>
+    61         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+    62             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+    63             <pattern>${FORMAT}</pattern>
+    64         </encoder>
+    65         <!-- 打印日志级别 -->
+    66         <filter class="ch.qos.logback.classic.filter.LevelFilter">
+    67             <level>ERROR</level>
+    68             <onMatch>ACCEPT</onMatch>
+    69             <onMismatch>DENY</onMismatch>
+    70         </filter>
+    71     </appender>
+    72
+    73     <!-- 日志输出级别 -->
+    74     <root level="debug">
+    75         <appender-ref ref="STDOUT"/>
+    76         <appender-ref ref="INFO-FILE"/>
+    77         <appender-ref ref="ERROR-FILE"/>
+    78     </root>
+    79
+    80
+    81     <logger name="druid.sql" level="INFO"/>
+    82     <logger name="com.shopping.goods.mapper" level="DEBUG">
+    83         <appender-ref ref="STDOUT" />
+    84         <appender-ref ref="INFO-FILE" />
+    85
+    86     </logger>
+    87
+    88
+    89     <!-- 减少nacos日志 -->
+    90     <logger name="com.alibaba.nacos" level="ERROR"/>
+    91
+    92 </configuration>

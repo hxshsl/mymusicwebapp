@@ -1,0 +1,27 @@
+package com.study.springclimb.music.dao;
+
+import com.study.springclimb.music.entity.Rank;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+/**
+ * <p>
+ * 评价 Mapper 接口
+ * </p>
+ *
+ * @author tqz
+ * @since 2021-06-21
+ */
+public interface RankDao extends BaseMapper<Rank> {
+    /**
+     * 查总分
+     */
+    int selectScoreSum(Integer songListId);
+
+    /**
+     * 查总评分人数
+     */
+    int selectRankNum(Integer songListId);
+
+    //添加评价
+    int insert(Rank rank);
+}
